@@ -23,7 +23,7 @@ function Dashboard() {
     const { toast } = useToast();
 
     const handleDeleteMessages = async (messageId: string) => {
-        setMessages(messages.filter((message) => message.id !== messageId));
+        setMessages(messages.filter((message) => message._id !== messageId));
     }
 
     const { data: session } = useSession();
@@ -32,13 +32,12 @@ function Dashboard() {
     })
 
     const { register, watch, setValue } = form;
-    const acceptMessage = watch('acceptMessages');
+    const acceptMessage = watch('acceptMessages');  
 
     const fetchAcceptMessage = useCallback(async () => {
         setIsSwitchLoading(true);
         try {
             const response = await axios.get<ApiResponse>('/api/accept-messages');
-            console.log("Status: ", response.data.isAcceptingMessage);
 
             setValue('acceptMessages', response.data.isAcceptingMessage);
         } catch (error) {
