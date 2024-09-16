@@ -11,7 +11,7 @@ export const authOptions: NextAuthOptions = {
             name: "Credentials",
             credentials: {
                 identifier: { label: "Email", type: "text" },
-                password: { label: "Password", type: "text" },
+                password: { label: "Password", type: "password" },
             },
             async authorize(credentials: any): Promise<any> {
                 await dbConnect();
@@ -36,8 +36,8 @@ export const authOptions: NextAuthOptions = {
         })
     ],
     callbacks: {
-        async jwt({ token, user, account, profile, isNewUser }) {
-            if(user){
+        async jwt({ token, user }) {
+            if (user) {
                 token._id = user._id?.toString();
                 token.isVerified = user.isVerified;
                 token.isAcceptingMessages = user.isAcceptingMessages;
@@ -45,8 +45,8 @@ export const authOptions: NextAuthOptions = {
             }
             return token
         },
-        async session({ session, user, token }) {
-            if(token){
+        async session({ session, token }) {
+            if (token) {
                 session.user._id = token._id;
                 session.user.isVerified = token.isVerified;
                 session.user.isAcceptingMessages = token.isAcceptingMessages;
